@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APR GrandInvoice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Bright gradient background */
+    font-family: Arial, sans-serif;
+}
+
+        .container-box {
+            background-color: #90aed1; /* White background for content */
+            border: 1px solid #ddd; /* Light border around the content */
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            position: relative;
+        }
+
+        /* Title Styling */
+        .page-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        /* Watermark Styling */
+        .watermark-invoice {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: rgba(34, 134, 165, 0.1);
+            font-weight: bold;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .invoice-form-container {
+            z-index: 1; /* Ensure the form is above the watermark */
+        }
+
+        .success-message {
+            display: none;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 999;
+            width: 80%;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Styling for buttons and inputs */
+        .btn-custom {
+            background-color: #3498db; /* Blue color for the button */
+            color: white;
+        }
+
+        .btn-custom:hover {
+            background-color: #2980b9; /* Darker blue on hover */
+        }
+
+        .form-control {
+            border-radius: 5px; /* Rounded corners for inputs */
+        }
+    </style>
+</head>
+<body>
+    <!-- Success Message Pop-up -->
+    <div class="success-message" id="popup-message">
+        Invoice generated successfully!
+    </div>
+
+    <!-- Watermark on the invoice form -->
+    <div class="watermark-invoice">APR</div>
+
+    <div class="container container-box">
+        <!-- Title Centered -->
+        <h2 class="page-title">APR GRAND LODGE</h2>
+
+        <h2 class="text-center mb-4">Room BOOKING</h2>
+        <div class="invoice-form-container">
+            <form id="invoice-form">
+                <div class="mb-3">
+                    <label for="customer_name" class="form-label">Customer Name</label>
+                    <input type="text" class="form-control" id="customer_name" name="customer_name">
+                </div>
+                <div class="mb-3">
+                    <label for="checkin_date" class="form-label">Check-in Date</label>
+                    <input type="date" class="form-control" id="checkin_date" name="checkin_date">
+                </div>
+                <div class="mb-3">
+                    <label for="checkout_date" class="form-label">Checkout Date</label>
+                    <input type="date" class="form-control" id="checkout_date" name="checkout_date">
+                </div>
+                
+                <!-- Room Details -->
+                <div class="card p-4 mb-4">
+                    <h4>Room Details</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Room Type</th>
+                                <th>Quantity</th>
+                                <th>Days</th>
+                                <th>Price per Day</th>
+                                <th>Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Deluxe Non AC</td>
+                                <td><input type="number" class="form-control quantity" data-price="1390" min="0"></td>
+                                <td><input type="number" class="form-control days" min="0"></td>
+                                <td>₹1390</td>
+                                <td class="total-price">₹0</td>
+                            </tr>
+                            <tr>
+                                <td>Deluxe AC</td>
+                                <td><input type="number" class="form-control quantity" data-price="1690" min="0"></td>
+                                <td><input type="number" class="form-control days" min="0"></td>
+                                <td>₹1690</td>
+                                <td class="total-price">₹0</td>
+                            </tr>
+                            <tr>
+                                <td>Suite Room Non AC</td>
+                                <td><input type="number" class="form-control quantity" data-price="2699" min="0"></td>
+                                <td><input type="number" class="form-control days" min="0"></td>
+                                <td>₹2699</td>
+                                <td class="total-price">₹0</td>
+                            </tr>
+                            <tr>
+                                <td>Deluxe Suite AC</td>
+                                <td><input type="number" class="form-control quantity" data-price="3090" min="0"></td>
+                                <td><input type="number" class="form-control days" min="0"></td>
+                                <td>₹3090</td>
+                                <td class="total-price">₹0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mb-3">
+                    <label for="total_amount" class="form-label">Total Amount</label>
+                    <input type="text" class="form-control" id="total_amount" name="total_amount" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="advance_amount" class="form-label">Advance Amount</label>
+                    <input type="number" class="form-control" id="advance_amount" name="advance_amount">
+                </div>
+                <div class="mb-3">
+                    <label for="balance_amount" class="form-label">Balance Amount</label>
+                    <input type="text" class="form-control" id="balance_amount" name="balance_amount" readonly>
+                </div>
+                
+                <button type="submit" class="btn btn-custom">Generate Invoice</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let advanceAmount = 0; // Track manually set advance amount
+
+        document.getElementById('invoice-form').addEventListener('input', function () {
+            let totalAmount = 0;
+
+            document.querySelectorAll('tbody tr').forEach(function(row) {
+                let qty = parseInt(row.querySelector('.quantity').value) || 0;
+                let days = parseInt(row.querySelector('.days').value) || 0;
+                let price = parseInt(row.querySelector('.quantity').dataset.price);
+                let totalPrice = qty * days * price;
+
+                // Ensure quantity and days are non-negative
+                if (qty < 0) qty = 0;
+                if (days < 0) days = 0;
+
+                row.querySelector('.total-price').textContent = `₹${totalPrice}`;
+                totalAmount += totalPrice;
+            });
+
+            document.getElementById('total_amount').value = totalAmount;
+            let balanceAmount = totalAmount - advanceAmount;
+            document.getElementById('balance_amount').value = balanceAmount;
+        });
+
+        document.getElementById('advance_amount').addEventListener('input', function () {
+            advanceAmount = parseInt(this.value) || 0;
+            let totalAmount = parseInt(document.getElementById('total_amount').value) || 0;
+            let balanceAmount = totalAmount - advanceAmount;
+            document.getElementById('balance_amount').value = balanceAmount;
+        });
+
+        document.getElementById('invoice-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+            let roomDetails = [];
+            document.querySelectorAll('tbody tr').forEach(function(row) {
+                let room = {
+                    room_type: row.cells[0].textContent,
+                    quantity: parseInt(row.querySelector('.quantity').value) || 0,
+                    days: parseInt(row.querySelector('.days').value) || 0,
+                    price: parseInt(row.querySelector('.quantity').dataset.price),
+                    total_price: parseInt(row.querySelector('.total-price').textContent.replace('₹', ''))
+                };
+                roomDetails.push(room);
+            });
+            formData.set('room_details', JSON.stringify(roomDetails));
+
+            fetch('/generate_invoice', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json()).then(data => {
+                let message = data.message || data.error;
+                document.getElementById('response-message').textContent = message;
+
+                // Show the success message pop-up at the top of the page
+                let popup = document.getElementById('popup-message');
+                popup.style.display = 'block';
+
+                // Hide the pop-up after 3 seconds
+                setTimeout(() => {
+                    popup.style.opacity = '0';
+                    setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 500);
+                }, 3000);
+
+                // Show PDF button after 1 second
+                setTimeout(() => {
+                    document.getElementById('pdf-button').style.display = 'block';
+                }, 1000);
+            });
+        });
+
+        document.getElementById('pdf-button').addEventListener('click', function () {
+            window.open('/path/to/generated/invoice.pdf', '_blank'); // Replace with actual PDF path
+        });
+    </script>
+</body>
+</html>
