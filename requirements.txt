@@ -14,3 +14,4 @@ moviepy
 whisper
 easyocr
 docker
+gunicorn
