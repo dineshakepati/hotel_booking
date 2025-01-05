@@ -1,0 +1,16 @@
+fastapi
+pydantic
+uvicorn
+python-dotenv
+generative-ai-hub-sdk
+hdbcli~=2.19.2
+pandas~=2.2.1
+requests
+python-multipart
+PyPDF2
+llama_index
+psycopg2
+moviepy
+whisper
+easyocr
+docker
